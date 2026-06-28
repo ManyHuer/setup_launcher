@@ -1,0 +1,28 @@
+{
+  "name": "setuplauncher",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "electron:dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "vite build && electron-builder"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.0",
+    "concurrently": "^9.2.3",
+    "electron": "^35.0.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.0",
+    "wait-on": "^9.0.10"
+  },
+  "dependencies": {
+    "fuse.js": "^7.4.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.0",
+    "sql.js": "^1.14.1"
+  }
+}
