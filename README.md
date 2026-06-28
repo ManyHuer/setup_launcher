@@ -4,7 +4,7 @@ Aplicación de escritorio para Windows que permite crear perfiles de aplicacione
 
 ![Electron](https://img.shields.io/badge/Electron-35.0.0-blue)
 ![React](https://img.shields.io/badge/React-19.1.0-blue)
-![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
+![License](https://img.shields.io/badge/license-CC%20BY--ND%204.0-blue)
 
 ## Características
 
@@ -79,4 +79,4 @@ setup_launcher/
 
 ## Licencia
 
-**All Rights Reserved** — Este proyecto es propiedad exclusiva de ManyHuer. No se permite el uso, copia, modificación ni distribución sin autorización expresa.
+**CC BY-ND 4.0** — Podés usar y compartir esta aplicación libremente, pero no podés modificarla ni crear versiones derivadas. © ManyHuer
