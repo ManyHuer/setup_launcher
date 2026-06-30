@@ -36,6 +36,7 @@ function AppModal({ initial, onSave, onClose }) {
 
   const filtered = useMemo(() => {
     if (debouncedQuery.length < 2) return [];
+    if (!apps || !Array.isArray(apps)) return [];
     const fuse = new Fuse(apps, {
       keys: ['name', 'executable_path'],
       threshold: 0.3,

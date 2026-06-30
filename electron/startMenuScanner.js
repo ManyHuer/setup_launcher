@@ -1,9 +1,13 @@
 import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { app } from 'electron';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+function getTempDir() {
+  const dir = path.join(app.getPath('userData'), 'temp');
+  try { fs.mkdirSync(dir, { recursive: true }); } catch {}
+  return dir;
+}
 
 const PS_STARTMENU = `
 $folders = @(
@@ -101,11 +105,16 @@ return $results | ConvertTo-Json -Compress
 
 function runPSScript(script, id) {
   return new Promise((resolve) => {
-    const scriptPath = path.join(__dirname, '..', 'database', 'storage', `_scan_${id}.ps1`);
-    fs.writeFileSync(scriptPath, script, 'utf-8');
+    const scriptPath = path.join(getTempDir(), `_scan_${id}.ps1`);
+    try {
+      fs.writeFileSync(scriptPath, script, 'utf-8');
+    } catch {
+      resolve([]);
+      return;
+    }
     exec(
       `powershell -NoProfile -ExecutionPolicy Bypass -File "${scriptPath}"`,
-      { encoding: 'utf-8', timeout: 60000, maxBuffer: 10 * 1024 * 1024 },
+      { encoding: 'utf-8', timeout: 15000, maxBuffer: 10 * 1024 * 1024 },
       (err, stdout) => {
         try { fs.unlinkSync(scriptPath); } catch {}
         if (err) { resolve([]); return; }

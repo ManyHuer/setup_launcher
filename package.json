@@ -1,7 +1,7 @@
 {
   "name": "setuplauncher",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "main": "electron/main.js",
   "scripts": {
@@ -10,10 +10,35 @@
     "electron:dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "electron:build": "vite build && electron-builder"
   },
+  "build": {
+    "appId": "com.manyhuer.setuplauncher",
+    "productName": "Setup Launcher",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "database/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Setup Launcher"
+    }
+  },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.5.0",
     "concurrently": "^9.2.3",
     "electron": "^35.0.0",
+    "electron-builder": "^26.15.3",
     "typescript": "~6.0.2",
     "vite": "^8.1.0",
     "wait-on": "^9.0.10"

@@ -1,13 +1,11 @@
 import initSqlJs from 'sql.js';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { app } from 'electron';
 
 export async function initDB() {
   const SQL = await initSqlJs();
-  const dbDir = path.join(__dirname, 'storage');
+  const dbDir = path.join(app.getPath('userData'), 'storage');
   const dbPath = path.join(dbDir, 'data.db');
 
   if (!fs.existsSync(dbDir)) {

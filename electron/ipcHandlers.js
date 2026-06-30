@@ -1,4 +1,4 @@
-import { ipcMain, shell, dialog } from 'electron';
+import { ipcMain, shell, dialog, app } from 'electron';
 import { exec } from 'child_process';
 import { getDB, getProfiles, getProfileById, createProfile, updateProfile, deleteProfile, getApplicationsByProfile, createApplication, updateApplication, deleteApplication, saveChanges } from '../database/queries.js';
 import { scanAll } from './startMenuScanner.js';
@@ -10,11 +10,15 @@ export function setDialogWindow(win) {
   dialogWindow = win;
 }
 
-export async function registerIpcHandlers(splashWindow) {
+export async function registerIpcHandlers() {
   const { db, dbPath } = await getDB();
 
-  dialogWindow = splashWindow;
-  cachedApps = await scanAll();
+  try {
+    cachedApps = await scanAll();
+  } catch (e) {
+    console.error('Scan failed:', e);
+    cachedApps = [];
+  }
 
   ipcMain.handle('db:getProfiles', () => getProfiles(db));
 
@@ -56,7 +60,15 @@ export async function registerIpcHandlers(splashWindow) {
     saveChanges(db, dbPath);
   });
 
-  ipcMain.handle('app:scanStartMenu', () => {
+  ipcMain.handle('app:scanStartMenu', async () => {
+    if (!cachedApps || cachedApps.length === 0) {
+      try {
+        cachedApps = await scanAll();
+      } catch (e) {
+        console.error('Scan on demand failed:', e);
+        cachedApps = [];
+      }
+    }
     return cachedApps;
   });
 
@@ -92,6 +104,14 @@ export async function registerIpcHandlers(splashWindow) {
       console.error('Error picking folder:', err);
       return null;
     }
+  });
+
+  ipcMain.handle('app:getAutoStart', () => {
+    return app.getLoginItemSettings().openAtLogin;
+  });
+
+  ipcMain.handle('app:setAutoStart', (_, enable) => {
+    app.setLoginItemSettings({ openAtLogin: enable });
   });
 
   ipcMain.handle('app:launchSetup', async (_, profileId) => {

@@ -46,12 +46,15 @@ function createWindow() {
 
 app.whenReady().then(async () => {
   const splash = await createSplash();
-  await registerIpcHandlers(splash);
-  splash.close();
+  await registerIpcHandlers();
   createWindow();
   Menu.setApplicationMenu(null);
   setDialogWindow(mainWindow);
-  mainWindow.show();
+
+  mainWindow.once('ready-to-show', () => {
+    splash.close();
+    mainWindow.show();
+  });
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

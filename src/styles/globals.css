@@ -249,6 +249,33 @@ body {
   border-style: solid;
 }
 
+/* Auto-start toggle */
+.auto-start-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.auto-start-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.auto-start-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.auto-start-toggle:hover .auto-start-label {
+  color: var(--text-primary);
+}
+
 .btn-primary {
   padding: 0.7rem 1.5rem;
   background: var(--accent);

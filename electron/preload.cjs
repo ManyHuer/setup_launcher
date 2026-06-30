@@ -15,4 +15,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   refreshScan: () => ipcRenderer.invoke('app:refreshScan'),
   pickExecutable: () => ipcRenderer.invoke('app:pickExecutable'),
   pickFolder: () => ipcRenderer.invoke('app:pickFolder'),
+  getAutoStart: () => ipcRenderer.invoke('app:getAutoStart'),
+  setAutoStart: (enable) => ipcRenderer.invoke('app:setAutoStart', enable),
 });

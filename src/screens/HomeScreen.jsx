@@ -5,6 +5,7 @@ import ProfileCard from '../components/ProfileCard';
 function HomeScreen() {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [autoStart, setAutoStart] = useState(false);
   const navigate = useNavigate();
 
   async function loadProfiles() {
@@ -25,6 +26,16 @@ function HomeScreen() {
   }
 
   useEffect(() => { loadProfiles(); }, []);
+
+  useEffect(() => {
+    window.electronAPI.getAutoStart().then(setAutoStart);
+  }, []);
+
+  async function toggleAutoStart() {
+    const next = !autoStart;
+    await window.electronAPI.setAutoStart(next);
+    setAutoStart(next);
+  }
 
   async function handleDelete(profile) {
     if (!confirm(`¿Eliminar el perfil "${profile.name}"?`)) return;
@@ -64,6 +75,10 @@ function HomeScreen() {
         <button className="btn-add-profile" onClick={() => navigate('/profile/new')}>
           + Nuevo Perfil
         </button>
+        <label className="auto-start-toggle">
+          <input type="checkbox" checked={autoStart} onChange={toggleAutoStart} />
+          <span className="auto-start-label">Iniciar con Windows</span>
+        </label>
       </header>
       <div className="profiles-grid">
         {profiles.map((profile) => (
